@@ -1,6 +1,6 @@
 
-import MouseLookController from '../../js/MouseLookController.js';
-import { Renderer, Scene, Node, Mesh, Primitive, BasicMaterial, CubeMapMaterial, PerspectiveCamera, vec3 } from '../../lib/engine';
+import MouseLookController from './MouseLookController.js';
+import { Renderer, Scene, Node, Mesh, Primitive, BasicMaterial, CubeMapMaterial, PerspectiveCamera, vec3 } from '../lib/engine/index.js';
 
 // Create a Renderer and append the canvas element to the DOM.
 let renderer = new Renderer(window.innerWidth, window.innerHeight);
@@ -21,12 +21,12 @@ const earthMaterial = new BasicMaterial({
 });
 
 const moonMaterial = new BasicMaterial({
-    map: renderer.loadTexture('resources/moon.jpg')
-});
+    map: renderer.loadTexture('resources/moon_surface.jpg')
+})
 
 const satelliteMaterial = new BasicMaterial({
-    map: renderer.loadTexture('resources/satelitt.jpg')
-});
+    map: renderer.loadTexture('resources/satellite_texture.jpg')
+})
 
 // Get more textures here:
 // https://www.solarsystemscope.com/textures/
@@ -63,7 +63,7 @@ const earthOrbitNode = new Node(scene);
 const earthCenterNode = new Node(earthOrbitNode);
 // We translate it along the x-axis to a suitable position.
 // When the earthOrbitNode is rotated, this node will orbit about the center of the sun.
-earthCenterNode.setTranslation(11.45, 0, 0);
+earthCenterNode.setTranslation(11.75, 0, 0);
 
 // Create a new Mesh for the Earth.
 const earth = new Mesh([earthPrimitive]);
@@ -72,46 +72,29 @@ const earth = new Mesh([earthPrimitive]);
 earthCenterNode.add(earth);
 
 // True scale: earth.setScale(0.0091, 0.0091, 0.0091);
-earth.setScale(0.091, 0.091, 0.091); // 10 times larger than irl
+earth.setScale(0.91, 0.91, 0.91); // 10 times larger than irl
 
-//Moon
 
-// We also want to draw the moon, so we use the static method 'from' to create a new Primitive based on the previous one.
+// Moon
 const moonPrimitive = Primitive.from(earthPrimitive, moonMaterial);
-
-// Next we create a Node that represents the Moons orbit.
 const moonOrbitNode = new Node(earthCenterNode);
-
-// This node represents the center of the Moon.
 const moonCenterNode = new Node(moonOrbitNode);
+moonCenterNode.setTranslation(3, 0, 0);
 
-// We translate it along the x-axis to a suitable position.
-// When the moonOrbitNode is rotated, this node will orbit about the center of the earth.
-moonCenterNode.setTranslation(5, 0, 0);
-
-// Create a new Mesh for the Moon.
 const moon = new Mesh([moonPrimitive]);
-
-// We add it to the moonCenterNode, so that it orbits around the earth.
 moonCenterNode.add(moon);
+moon.setScale(0.091, 0.091, 0.091); // 10 times larger than irl
 
-// True scale: moon.setScale(0.0091, 0.0091, 0.0091);
-moon.setScale(0.091, 0.091, 0.091);
-
-//Satellite
+// Satellite
 const satellitePrimitive = Primitive.from(moonPrimitive, satelliteMaterial);
-
 const satelliteOrbitNode = new Node(moonCenterNode);
-
 const satelliteCenterNode = new Node(satelliteOrbitNode);
-
-satelliteCenterNode.setTranslation(1,0,0);
+satelliteCenterNode.setTranslation(1, 0, 0);
 
 const satellite = new Mesh([satellitePrimitive]);
-
 satelliteCenterNode.add(satellite);
+satellite.setScale(0.091, 0.091, 0.091); // 10 times larger than irl
 
-satellite.setScale(0.091, 0.091, 0.091);
 
 // We create a Node representing movement, in order to decouple camera rotation.
 // We do this so that the skybox follows the movement, but not the rotation of the camera.
@@ -267,12 +250,12 @@ function loop(now) {
     const orbitalRotationFactor = time * deltaCorrection; // The amount the earth rotates about the sun every tick.
     earthOrbitNode.rotateY(orbitalRotationFactor);
     moonOrbitNode.rotateY(orbitalRotationFactor);
-    satelliteOrbitNode.rotateY(orbitalRotationFactor);
+    
+
     
     earth.rotateY(orbitalRotationFactor * 365); // The Earth rotates approx. 365 times per year.
     sun.rotateY(orbitalRotationFactor * 25); // The Sun rotates approx. 25 times per year.
-    moon.rotateY(orbitalRotationFactor * 13); // The Moon rotates approx. 13 times per year.
-
+    moon.rotateY(orbitalRotationFactor * 13);
 
     // Reset mouse movement accumulator every frame.
     yaw = 0;
