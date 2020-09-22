@@ -20,13 +20,27 @@ const earthMaterial = new BasicMaterial({
     map: renderer.loadTexture('resources/earth_daymap.jpg')
 });
 
+const mercuryMaterial = new BasicMaterial({
+    map: renderer.loadTexture('resources/mercury_surface.jpg')
+});
+
+const venusMaterial = new BasicMaterial({
+    map: renderer.loadTexture('resources/venus_surface.jpg')
+});
+
+const marsMaterial = new BasicMaterial({
+    map: renderer.loadTexture('resources/mars_surface.jpg')
+});
+
 const moonMaterial = new BasicMaterial({
     map: renderer.loadTexture('resources/moon_surface.jpg')
-})
+});
 
 const satelliteMaterial = new BasicMaterial({
     map: renderer.loadTexture('resources/satellite_texture.jpg')
-})
+});
+
+
 
 // Get more textures here:
 // https://www.solarsystemscope.com/textures/
@@ -72,8 +86,37 @@ const earth = new Mesh([earthPrimitive]);
 earthCenterNode.add(earth);
 
 // True scale: earth.setScale(0.0091, 0.0091, 0.0091);
-earth.setScale(0.91, 0.91, 0.91); // 10 times larger than irl
+earth.setScale(0.31, 0.31, 0.31); // 10 times larger than irl
 
+// Mercury
+const mercuryPrimitive = Primitive.from(sunPrimitive, mercuryMaterial);
+const mercuryOrbitNode = new Node(scene);
+const mercuryCenterNode = new Node(mercuryOrbitNode);
+mercuryCenterNode.setTranslation(3, 0, 0);
+
+const mercury = new Mesh([mercuryPrimitive]);
+mercuryCenterNode.add(mercury);
+mercury.setScale(0.31, 0.31, 0.31); // 10 times larger than irl
+
+// Venus
+const venusPrimitive = Primitive.from(sunPrimitive, venusMaterial);
+const venusOrbitNode = new Node(scene);
+const venusCenterNode = new Node(venusOrbitNode);
+venusCenterNode.setTranslation(7, 0, 0);
+
+const venus = new Mesh([venusPrimitive]);
+venusCenterNode.add(venus);
+venus.setScale(0.31, 0.31, 0.31); // 10 times larger than irl
+
+// Mars
+const marsPrimitive = Primitive.from(sunPrimitive, marsMaterial);
+const marsOrbitNode = new Node(scene);
+const marsCenterNode = new Node(marsOrbitNode);
+marsCenterNode.setTranslation(14, 0, 0);
+
+const mars = new Mesh([marsPrimitive]);
+marsCenterNode.add(mars);
+mars.setScale(0.31, 0.31, 0.31); // 10 times larger than irl
 
 // Moon
 const moonPrimitive = Primitive.from(earthPrimitive, moonMaterial);
@@ -250,11 +293,17 @@ function loop(now) {
     const orbitalRotationFactor = time * deltaCorrection; // The amount the earth rotates about the sun every tick.
     earthOrbitNode.rotateY(orbitalRotationFactor);
     moonOrbitNode.rotateY(orbitalRotationFactor);
+    mercuryOrbitNode.rotateY(orbitalRotationFactor);
+    venusOrbitNode.rotateY(orbitalRotationFactor);
+    marsOrbitNode.rotateY(orbitalRotationFactor);
     
 
     
     earth.rotateY(orbitalRotationFactor * 365); // The Earth rotates approx. 365 times per year.
     sun.rotateY(orbitalRotationFactor * 25); // The Sun rotates approx. 25 times per year.
+    mercury.rotateY(orbitalRotationFactor * 20);
+    venus.rotateY(orbitalRotationFactor * 20);
+    mars.rotateY(orbitalRotationFactor * 20);
     moon.rotateY(orbitalRotationFactor * 13);
 
     // Reset mouse movement accumulator every frame.
