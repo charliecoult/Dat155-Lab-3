@@ -77,7 +77,7 @@ const earthOrbitNode = new Node(scene);
 const earthCenterNode = new Node(earthOrbitNode);
 // We translate it along the x-axis to a suitable position.
 // When the earthOrbitNode is rotated, this node will orbit about the center of the sun.
-earthCenterNode.setTranslation(11.75, 0, 0);
+earthCenterNode.setTranslation(11.00, 0, 0);
 
 // Create a new Mesh for the Earth.
 const earth = new Mesh([earthPrimitive]);
@@ -96,7 +96,7 @@ mercuryCenterNode.setTranslation(3, 0, 0);
 
 const mercury = new Mesh([mercuryPrimitive]);
 mercuryCenterNode.add(mercury);
-mercury.setScale(0.31, 0.31, 0.31); // 10 times larger than irl
+mercury.setScale(0.71, 0.71, 0.71); // 10 times larger than irl
 
 // Venus
 const venusPrimitive = Primitive.from(sunPrimitive, venusMaterial);
@@ -106,7 +106,7 @@ venusCenterNode.setTranslation(7, 0, 0);
 
 const venus = new Mesh([venusPrimitive]);
 venusCenterNode.add(venus);
-venus.setScale(0.31, 0.31, 0.31); // 10 times larger than irl
+venus.setScale(0.51, 0.51, 0.51); // 10 times larger than irl
 
 // Mars
 const marsPrimitive = Primitive.from(sunPrimitive, marsMaterial);
@@ -116,13 +116,13 @@ marsCenterNode.setTranslation(14, 0, 0);
 
 const mars = new Mesh([marsPrimitive]);
 marsCenterNode.add(mars);
-mars.setScale(0.31, 0.31, 0.31); // 10 times larger than irl
+mars.setScale(0.21, 0.21, 0.21); // 10 times larger than irl
 
 // Moon
 const moonPrimitive = Primitive.from(earthPrimitive, moonMaterial);
 const moonOrbitNode = new Node(earthCenterNode);
 const moonCenterNode = new Node(moonOrbitNode);
-moonCenterNode.setTranslation(3, 0, 0);
+moonCenterNode.setTranslation(1, 0, 0);
 
 const moon = new Mesh([moonPrimitive]);
 moonCenterNode.add(moon);
@@ -132,7 +132,7 @@ moon.setScale(0.091, 0.091, 0.091); // 10 times larger than irl
 const satellitePrimitive = Primitive.from(moonPrimitive, satelliteMaterial);
 const satelliteOrbitNode = new Node(moonCenterNode);
 const satelliteCenterNode = new Node(satelliteOrbitNode);
-satelliteCenterNode.setTranslation(1, 0, 0);
+satelliteCenterNode.setTranslation(0.3, 0, 0);
 
 const satellite = new Mesh([satellitePrimitive]);
 satelliteCenterNode.add(satellite);
@@ -301,9 +301,9 @@ function loop(now) {
     
     earth.rotateY(orbitalRotationFactor * 365); // The Earth rotates approx. 365 times per year.
     sun.rotateY(orbitalRotationFactor * 25); // The Sun rotates approx. 25 times per year.
-    mercury.rotateY(orbitalRotationFactor * 20);
-    venus.rotateY(orbitalRotationFactor * 20);
-    mars.rotateY(orbitalRotationFactor * 20);
+    mercury.rotateY(orbitalRotationFactor * 6.4);
+    venus.rotateY(orbitalRotationFactor * 1.5);
+    mars.rotateY(orbitalRotationFactor * 365);
     moon.rotateY(orbitalRotationFactor * 13);
 
     // Reset mouse movement accumulator every frame.
